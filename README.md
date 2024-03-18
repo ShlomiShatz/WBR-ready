@@ -1,5 +1,6 @@
-## WBR-ready
+![9](https://github.com/ShlomiShatz/WBR-ready/assets/86709272/d4adde68-ad84-45c6-a7a5-96f31f2b969d)## WBR-ready
 This is a continuation of Eyal Brilling's WBR project, regarding adding specifics to setting up the RPi4 and WBR to work remotely.
+
 ### Setting Up the RPi
 The first thing needed, is setting up the RPi4. There is an extensive guide in Eyal's project, make sure to install Ubuntu server, ros2 and the wbr914_package as specified [here](https://github.com/EyalBrilling/914-PC-BOT-integration-with-raspberry-pi-4-and-ROS2/blob/main/docs/raspberry_pi_setup.md).  
 You will need to connect the RPi4 to a monitor (using the Micro-HDMI port on the RPi, make sure to use the one labled **0**) and a keyboard. Preferably make the username `Pi` and computer name `WBR$$$` (with the WBR's specific number).  
@@ -51,8 +52,35 @@ chmod +x send_telegram.sh
 Now check if you got the message. *Note: there is a problem with connecting the WBR_net to the internet, it is possible it is not working just yet.*  
 Another important step that will help you is to change the router settings to give your RPi a specific IP when connected. Ask Shlomi for help if needed.  
 
-### Connecting the RPi to the WBR
+### Setting Up the WBR
+#### Replacing the Batteries
+The WhiteBoxRobotics PC-Bot 914 is powered by two 12V lead-acid batteries located at the bottom of the robot. For most of the WBRs in the lab, they need to be replaced. Few steps to do it:
+1. Disconnect the cables connecting the top part of the robot to the bottom part, in the front and back of the robot (**MAKE SURE EACH CABLE DISCONNECTED IS LABLED**):
+   - Main power cable (marked MPC)
+   - Infra red cables (marked IO1-IO8 or IR1-IR8)
+   - The motor cables (marked MOT-L, MOT-R)
+   - 12V cable
+   - USB cable
+   - Any other that might get in the way
+![2](https://github.com/ShlomiShatz/WBR-ready/assets/86709272/9b3e7ef3-3ecb-46a6-8187-8284486f987f)
+![3](https://github.com/ShlomiShatz/WBR-ready/assets/86709272/94fa45ea-7ea5-44ef-8840-12cc0255f1e0)
+2. Unscrew the 8 small screws that hold the bottom and the top part together, 4 on the front and 4 on the back.
+![4](https://github.com/ShlomiShatz/WBR-ready/assets/86709272/933d1b55-3560-4b49-a3fd-4461e1affb0c)
+3. Separate the bottom and the top parts of the robot, and place the top part aside carefully.
+![5](https://github.com/ShlomiShatz/WBR-ready/assets/86709272/d52ee74d-ac07-4c1c-b7a1-f6e7df4cfb48)
+4. Disconnect the two batteries from the cables.
+![6](https://github.com/ShlomiShatz/WBR-ready/assets/86709272/06997c57-c566-4373-a648-fc667a3580e9)
+5. Remove screws of the part that holds the batteries in place and the part itself.
+![7](https://github.com/ShlomiShatz/WBR-ready/assets/86709272/45daa7f3-b661-429f-8ae3-5dc5bbd8317a)
+![8](https://github.com/ShlomiShatz/WBR-ready/assets/86709272/39d69316-0c50-46c8-a0d4-0ac1a1540a75)
+6. Change both batteries and make sure it is in the right place, facing the right direction as the old ones.
+7. Put the part that holds them back to place and use the screws to make sure it fits tightly *Don't forget to orginize the cables in a way that will make connecting them to the batteries possible before the screws*.
+![9](https://github.com/ShlomiShatz/WBR-ready/assets/86709272/413c17a3-adad-467e-801d-27d0a88c8d4c)
+8. Connect the cables to the batteries, making sure keeping the polarity intact (black wires go to black (negative), yellow wires go to red (positive)).
+![10](https://github.com/ShlomiShatz/WBR-ready/assets/86709272/9f944824-6e60-43b6-8dac-a0fab1b5aa8e)
+9. Put the top part back on the bottom part, make sure they are facing the same direction.
+10. Screw the 8 small screws back and connect the cables to where each of them was.
+11. Turn on the red power button and make sure it lights up.
+#### Power Suppliers
 The WBR has two sides. We will name the side with the main power switch **SIDE A**, and the side with the black switch and LED lights **SIDE B**:
-![1710766432243](https://github.com/ShlomiShatz/WBR-ready/assets/86709272/a6c4b6ee-fe3f-4d62-95a8-3e4580969ccd)
-Now,
-
+![1](https://github.com/ShlomiShatz/WBR-ready/assets/86709272/d28adfaf-763f-4ae3-8e9e-fd0293a38e47)
