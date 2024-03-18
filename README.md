@@ -1,7 +1,7 @@
-## WBR-ready
+# WBR-ready
 This is a continuation of Eyal Brilling's WBR project, regarding adding specifics to setting up the RPi4 and WBR to work remotely.
 
-### Setting Up the RPi
+## Setting Up the RPi
 The first thing needed, is setting up the RPi4. There is an extensive guide in Eyal's project, make sure to install Ubuntu server, ros2 and the wbr914_package as specified [here](https://github.com/EyalBrilling/914-PC-BOT-integration-with-raspberry-pi-4-and-ROS2/blob/main/docs/raspberry_pi_setup.md).  
 You will need to connect the RPi4 to a monitor (using the Micro-HDMI port on the RPi, make sure to use the one labled **0**) and a keyboard. Preferably make the username `Pi` and computer name `WBR$$$` (with the WBR's specific number).  
 Next, using Eyal's script or changing the files directly, make sure that the RPi is connecting to the `WBR_net` router found in the robotic's lab, you will get the password from Shlomi.
@@ -52,8 +52,8 @@ chmod +x send_telegram.sh
 Now check if you got the message. *Note: there is a problem with connecting the WBR_net to the internet, it is possible it is not working just yet.*  
 Another important step that will help you is to change the router settings to give your RPi a specific IP when connected. Ask Shlomi for help if needed.  
 
-### Setting Up the WBR
-#### Batteries
+## Setting Up the WBR
+### Batteries
 The WhiteBoxRobotics PC-Bot 914 is powered by two 12V lead-acid batteries located at the bottom of the robot. For most of the WBRs in the lab, they need to be replaced. Few steps to do it (make sure the robot is turned off!):
 1. Disconnect the cables connecting the top part of the robot to the bottom part, in the front and back of the robot (**MAKE SURE EACH CABLE DISCONNECTED IS LABLED**):
    - Main power cable (marked MPC)
@@ -91,7 +91,7 @@ The WhiteBoxRobotics PC-Bot 914 is powered by two 12V lead-acid batteries locate
 11. Turn on the red power button and the green power button to make sure they light up.
 <img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/b4df1310-7a28-42a7-ae2b-0da50b886acd" width="300" height="300">
 
-#### Power Suppliers
+### Power Suppliers
 The WBR has two sides. We will name the side with the main power switch **SIDE A**, and the side with the black switch and LED lights **SIDE B**:
 <img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/d28adfaf-763f-4ae3-8e9e-fd0293a38e47" width="300" height="300">
 
@@ -105,7 +105,17 @@ You will need to replace them, more importantly the one that is closer to the po
 4. Screw it to place and connect all the cables back.
 5. Turn on the power and make sure everything works properly - every yellow wire outputs 12V, red wire outputs 5V (use a multimeter if needed).
 
-#### Connecting RPi to WBR
+### Connecting RPi to WBR
 After you have a working 5V output, you can connect the RPi to the WBR. **THE RASPBERRY TAKES 5V, INPUTTING 12V WILL CAUSE DAMAGE TO THE DEVICE**.  
+Open side B (as specified in the *Power Suppliers* section). It should look empty, and with a few cables loose. That is where you wan to position your RPi. Connecting the RPi will include:
+1. Power source
+2. Motors
+3. Off switch
+4. LED indicators
+Each section will be detailed below, but a few things beforehand:
+- We will use the GPIO pins of the RPi. It carries risks and might damage the RPi. Please make sure multiple times that everything is set up properly.
+- Most of what is written here is suggestive, I urge you to read the documentation and expand your knowledge in these subjects to come up with your own ideas.
+- For later reference, we will use this sketch of the RPi GPIO pins as specified [here](https://www.raspberrypi.com/documentation/computers/raspberry-pi.html):
+![GPIO-Pinout-Diagram-2](https://github.com/ShlomiShatz/WBR-ready/assets/86709272/4c039bb4-9862-4777-b4c6-38c9fabcb2d4)
 
-
+#### Power Source
