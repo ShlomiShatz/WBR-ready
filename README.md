@@ -34,9 +34,6 @@ CHAT_ID=""
 ROBOT_NAME="WBR$$$"
 IP=$(hostname -I)
 MESSAGE="$ROBOT_NAME IP: $IP"
-{
-        python3 /home/pi/ledup.py
-}&
 if ping -c 1 google.com &> /dev/null; then
         curl -s -X POST https://api.telegram.org/bot$TOKEN/sendMessage -d chat_id=$CHAT_ID -d text="$MESSAGE" > /dev/null
 else
@@ -106,16 +103,69 @@ You will need to replace them, more importantly the one that is closer to the po
 5. Turn on the power and make sure everything works properly - every yellow wire outputs 12V, red wire outputs 5V (use a multimeter if needed).
 
 ### Connecting RPi to WBR
-After you have a working 5V output, you can connect the RPi to the WBR. **THE RASPBERRY TAKES 5V, INPUTTING 12V WILL CAUSE DAMAGE TO THE DEVICE**.  
+After you have a working 5V output, you can connect the RPi to the WBR.  
 Open side B (as specified in the *Power Suppliers* section). It should look empty, and with a few cables loose. That is where you wan to position your RPi. Connecting the RPi will include:
 1. Power source
 2. Motors
-3. Off switch
-4. LED indicators
+3. Off switch & LED indicators
+
 Each section will be detailed below, but a few things beforehand:
 - We will use the GPIO pins of the RPi. It carries risks and might damage the RPi. Please make sure multiple times that everything is set up properly.
 - Most of what is written here is suggestive, I urge you to read the documentation and expand your knowledge in these subjects to come up with your own ideas.
 - For later reference, we will use this sketch of the RPi GPIO pins as specified [here](https://www.raspberrypi.com/documentation/computers/raspberry-pi.html):
 ![GPIO-Pinout-Diagram-2](https://github.com/ShlomiShatz/WBR-ready/assets/86709272/4c039bb4-9862-4777-b4c6-38c9fabcb2d4)
+Every pin is numbered, some of them has specific purpse. For example, pins #2 and #4 are for 5V inputs (we will use one of them later), and pin #6 is GROUND pin, which means it is used to connect the negative wires to it.
 
 #### Power Source
+To connect the RPi to its power source, first make sure you got 5V output from the power supplier. Use a multimeter. **THE RASPBERRY TAKES 5V, INPUTTING 12V WILL CAUSE DAMAGE TO THE DEVICE**. After checking, take one 5V output (preferably from the M2-ATX that is closer to the red power switch), connect it to a red wire with a female pin input, and the ground to a black one, and connect the red to pin #4, and the black to pin #6, as shown in the picture below: 
+<img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/72e9084a-178d-4154-a08b-291d7a69e0dc" width="300" height="300">
+
+Turn on the power button and wait a few seconds, the RPi leds should turn on and remain stable.
+
+#### Motors
+After powering the RPi, you can connect it to the motors. take the USB cable that connects to the back of the robot (marked USB), and connect it to the **lower usb port in the middle**, called `tty0`, as seen in the pictures below. Connecting it to a different one might cause trouble in the next steps.
+<img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/e336121b-bc8a-4e80-9b72-101e01d9fd41" width="300" height="300">
+<img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/8492b352-69f6-43ab-bafe-82b1cb560b80" width="300" height="300">
+
+Turn on/restart the RPi, by now you are good-to-go on connecting to the raspberry pi through ssh and running some of the node_examples found in Eyal's repository.
+
+#### Off Switch & LED Indicators
+Next thing we want to do, is to connect an off switch to the RPi, so we can turn it off safely without needing to SSH every time it turns on, as well as a LED light to indicate if it is on.  
+In the terminal, run `sudo nano /boot/firmware/config.txt`  
+Scroll all the way down, and write:
+```
+[all]
+dtoverlay=gpio-shutdown,gpio_pin=23
+dtoverlay=uart3
+```
+This will make sure that connecting the off switch (the black switch) to the RPi in pin #16 (*GPIO #23*) will enable shutting the RPi down (you can connect it to any other regular pin, I put it there because it is next to a GROUND pin). Now, take the wires labled `PRST` and connect the red to pin #16 and the black to pin #14. Now, everytime you click the black **PC Reset** switch, the RPi will shutdown safely.  
+Next, we need to connect the LED. The second line we entered (uart3) makes it so that a specific pin will turn a LED on when the RPi is on. The default pin is #7 (GPIO #4). So take the wires labled `PLED` and connect the red to pin #7 and the black to pin #9. Now, the green LED (marked PC Power) will turn on whenever the RPi is on.  
+Finally, we want to make sure that the orange LED is turned on to indicate that the RPi is ready for SSH. In order to do it, we need to make a simple file that will turn on a specific pin for LED output, and run it whenever the RPi is ready. In this case, we will use pin #18 (GPIO #24) and the GROUND pin next to it. First, we need to install the `gpiozero` python library in our RPi. To do it, run:
+`sudo pip install gpiozero`  
+Now, make a new file called `ledup.py` and in it write:
+```python
+from gpiozero import LED
+from time import sleep
+
+led = LED(24)
+led.on()
+sleep(20)
+```
+We turned GPIO 24# on, and waited 20 seconds before closing (so we can actually see the LED turning on). Now, connect the wires labeled `HLED` to pin #18 (red wire) and to pin #20 (black wire). Now run the python file and the orange light (marked HDD) should turn on. Now, we want it to run whenever the RPi is turned on, so we need to change our `send_telegram.sh` file to the following:  
+```bash
+#!/bin/bash
+TOKEN=""
+CHAT_ID=""
+ROBOT_NAME="WBR$$$"
+IP=$(hostname -I)
+MESSAGE="$ROBOT_NAME IP: $IP"
+{
+        python3 /home/pi/ledup.py
+}&
+if ping -c 1 google.com &> /dev/null; then
+        curl -s -X POST https://api.telegram.org/bot$TOKEN/sendMessage -d chat_id=$CHAT_ID -d text="$MESSAGE" > /dev/null
+else
+        echo "Trying to send IP address, but failed!"
+fi
+```
+We are running the python file in parallel to sending the message to the Telegram bot.
