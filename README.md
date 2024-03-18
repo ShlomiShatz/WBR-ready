@@ -1,6 +1,6 @@
 ## WBR-ready
 This is a continuation of Eyal Brilling's WBR project, regarding adding specifics to setting up the RPi4 and WBR to work remotely.
-### Setting Up
+### Setting Up the RPi
 The first thing needed, is setting up the RPi4. There is an extensive guide in Eyal's project, make sure to install Ubuntu server, ros2 and the wbr914_package as specified [here](https://github.com/EyalBrilling/914-PC-BOT-integration-with-raspberry-pi-4-and-ROS2/blob/main/docs/raspberry_pi_setup.md).  
 You will need to connect the RPi4 to a monitor (using the Micro-HDMI port on the RPi, make sure to use the one labled **0**) and a keyboard. Preferably make the username `Pi` and computer name `WBR$$$` (with the WBR's specific number).  
 Next, using Eyal's script or changing the files directly, make sure that the RPi is connecting to the `WBR_net` router found in the robotic's lab, you will get the password from Shlomi.
@@ -52,3 +52,7 @@ Now check if you got the message. *Note: there is a problem with connecting the 
 Another important step that will help you is to change the router settings to give your RPi a specific IP when connected. Ask Shlomi for help if needed.  
 
 ### Connecting the RPi to the WBR
+The WBR has two sides. We will name the side with the main power switch **SIDE A**, and the side with the black switch and LED lights **SIDE B**:
+![1710766432243](https://github.com/ShlomiShatz/WBR-ready/assets/86709272/a6c4b6ee-fe3f-4d62-95a8-3e4580969ccd)
+Now,
+
