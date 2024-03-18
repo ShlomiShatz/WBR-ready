@@ -80,7 +80,7 @@ The WhiteBoxRobotics PC-Bot 914 is powered by two 12V lead-acid batteries locate
 <img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/39d69316-0c50-46c8-a0d4-0ac1a1540a75" width="300" height="300">
 
 6. Change both batteries and make sure it is in the right place, facing the same direction as the old ones.
-7. Put the part that holds them back to place and use the screws to make sure it fits tightly *Don't forget to orginize the cables in a way that will make connecting them to the batteries possible before the screws*.
+7. Put the part that holds them back to place and use the screws to make sure it fits tightly. *Don't forget to orginize the cables in a way that will make connecting them to the batteries possible before tightning the screws*.
 <img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/413c17a3-adad-467e-801d-27d0a88c8d4c" width="300" height="300">
 
 8. Connect the cables to the batteries, making sure keeping the polarity intact (black wires go to black (negative), yellow wires go to red (positive)).
@@ -97,6 +97,7 @@ The WBR has two sides. We will name the side with the main power switch **SIDE A
 
 Open A side, and you will find two M2-ATX power suppliers, each with its own purpse. The one on the that is closer to the power buttons is designated for the computer itself (and in our case - the RPi4), and the other is connected to the rest of the robot (fans, IRs, motors, etc.). As seen in this picture, each power supplier is connected to a battery (on the bottom right of the picture, two yellow and one red connectors, marked blue in the picture) and gives out power through the top ports (marked ATX1 and ATX 2, green in the picture). The right one is also suppliying power through the square port.  
 <img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/6545367b-3016-4f79-96e1-84cf40ae4a75" width="300" height="300">
+
 You will need to replace them, more importantly the one that is closer to the power button. To do it (make sure the robot is turned off!):
 1. Disconnect *CAREFULLY* all of the cables, and remember where each went to, **INCLUDING THE JUMPER ON THE LEFT POWER SUPPLIER, ATTACHED TO THE *A* SLOT (marked with a red circle in the picture above).
 2. Unscrew the top and bottom screws.
