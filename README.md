@@ -53,8 +53,8 @@ Now check if you got the message. *Note: there is a problem with connecting the 
 Another important step that will help you is to change the router settings to give your RPi a specific IP when connected. Ask Shlomi for help if needed.  
 
 ### Setting Up the WBR
-#### Replacing the Batteries
-The WhiteBoxRobotics PC-Bot 914 is powered by two 12V lead-acid batteries located at the bottom of the robot. For most of the WBRs in the lab, they need to be replaced. Few steps to do it:
+#### Batteries
+The WhiteBoxRobotics PC-Bot 914 is powered by two 12V lead-acid batteries located at the bottom of the robot. For most of the WBRs in the lab, they need to be replaced. Few steps to do it (make sure the robot is turned off!):
 1. Disconnect the cables connecting the top part of the robot to the bottom part, in the front and back of the robot (**MAKE SURE EACH CABLE DISCONNECTED IS LABLED**):
    - Main power cable (marked MPC)
    - Infra red cables (marked IO1-IO8 or IR1-IR8)
@@ -72,25 +72,39 @@ The WhiteBoxRobotics PC-Bot 914 is powered by two 12V lead-acid batteries locate
 3. Separate the bottom and the top parts of the robot, and place the top part aside carefully.
 <img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/d52ee74d-ac07-4c1c-b7a1-f6e7df4cfb48" width="300" height="300">
 
-5. Disconnect the two batteries from the cables.
+4. Disconnect the two batteries from the cables.
 <img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/06997c57-c566-4373-a648-fc667a3580e9" width="300" height="300">
 
-7. Remove screws of the part that holds the batteries in place and the part itself.
+5. Remove screws of the part that holds the batteries in place and the part itself.
 <img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/45daa7f3-b661-429f-8ae3-5dc5bbd8317a" width="300" height="300">
 <img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/39d69316-0c50-46c8-a0d4-0ac1a1540a75" width="300" height="300">
 
-9. Change both batteries and make sure it is in the right place, facing the right direction as the old ones.
-10. Put the part that holds them back to place and use the screws to make sure it fits tightly *Don't forget to orginize the cables in a way that will make connecting them to the batteries possible before the screws*.
+6. Change both batteries and make sure it is in the right place, facing the same direction as the old ones.
+7. Put the part that holds them back to place and use the screws to make sure it fits tightly *Don't forget to orginize the cables in a way that will make connecting them to the batteries possible before the screws*.
 <img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/413c17a3-adad-467e-801d-27d0a88c8d4c" width="300" height="300">
 
-12. Connect the cables to the batteries, making sure keeping the polarity intact (black wires go to black (negative), yellow wires go to red (positive)).
+8. Connect the cables to the batteries, making sure keeping the polarity intact (black wires go to black (negative), yellow wires go to red (positive)).
 <img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/9f944824-6e60-43b6-8dac-a0fab1b5aa8e" width="300" height="300">
 
-14. Put the top part back on the bottom part, make sure they are facing the same direction.
-15. Screw the 8 small screws back and connect the cables to where each of them was.
-16. Turn on the red power button and make sure it lights up.
+9. Put the top part back on the bottom part, make sure they are facing the same direction.
+10. Screw the 8 small screws back and connect the cables to where each of them was.
+11. Turn on the red power button and the green power button to make sure they light up.
+<img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/b4df1310-7a28-42a7-ae2b-0da50b886acd" width="300" height="300">
+
 #### Power Suppliers
 The WBR has two sides. We will name the side with the main power switch **SIDE A**, and the side with the black switch and LED lights **SIDE B**:
 <img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/d28adfaf-763f-4ae3-8e9e-fd0293a38e47" width="300" height="300">
 
-Open the A side and you will see two M2-ATXs that supply the power to the intire robot.
+Open A side, and you will find two M2-ATX power suppliers, each with its own purpse. The one on the that is closer to the power buttons is designated for the computer itself (and in our case - the RPi4), and the other is connected to the rest of the robot (fans, IRs, motors, etc.). As seen in this picture, each power supplier is connected to a battery (on the bottom right of the picture, two yellow and one red connectors, marked blue in the picture) and gives out power through the top ports (marked ATX1 and ATX 2, green in the picture). The right one is also suppliying power through the square port.  
+<img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/6545367b-3016-4f79-96e1-84cf40ae4a75" width="300" height="300">
+You will need to replace them, more importantly the one that is closer to the power button. To do it (make sure the robot is turned off!):
+1. Disconnect *CAREFULLY* all of the cables, and remember where each went to, **INCLUDING THE JUMPER ON THE LEFT POWER SUPPLIER, ATTACHED TO THE *A* SLOT (marked with a red circle in the picture above).
+2. Unscrew the top and bottom screws.
+3. Remove the power supplier and position the new one.
+4. Screw it to place and connect all the cables back.
+5. Turn on the power and make sure everything works properly - every yellow wire outputs 12V, red wire outputs 5V (use a multimeter if needed).
+
+#### Connecting RPi to WBR
+After you have a working 5V output, you can connect the RPi to the WBR. **THE RASPBERRY TAKES 5V, INPUTTING 12V WILL CAUSE DAMAGE TO THE DEVICE**.  
+
+
