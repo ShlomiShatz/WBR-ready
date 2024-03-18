@@ -99,7 +99,7 @@ Open A side, and you will find two M2-ATX power suppliers, each with its own pur
 <img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/6545367b-3016-4f79-96e1-84cf40ae4a75" width="300" height="300">
 
 You will need to replace them, more importantly the one that is closer to the power button. To do it (make sure the robot is turned off!):
-1. Disconnect *CAREFULLY* all of the cables, and remember where each went to, **INCLUDING THE JUMPER ON THE LEFT POWER SUPPLIER, ATTACHED TO THE *A* SLOT (marked with a red circle in the picture above).
+1. Disconnect *CAREFULLY* all of the cables, and remember where each went to, **INCLUDING THE JUMPER ON THE LEFT POWER SUPPLIER, ATTACHED TO THE *A* SLOT (marked with a red circle in the picture above)**.
 2. Unscrew the top and bottom screws.
 3. Remove the power supplier and position the new one.
 4. Screw it to place and connect all the cables back.
