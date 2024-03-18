@@ -62,8 +62,8 @@ The WhiteBoxRobotics PC-Bot 914 is powered by two 12V lead-acid batteries locate
    - 12V cable
    - USB cable
    - Any other that might get in the way
-![2](https://github.com/ShlomiShatz/WBR-ready/assets/86709272/9b3e7ef3-3ecb-46a6-8187-8284486f987f =250x250)
-![3](https://github.com/ShlomiShatz/WBR-ready/assets/86709272/94fa45ea-7ea5-44ef-8840-12cc0255f1e0 =250x250)
+![2](https://github.com/ShlomiShatz/WBR-ready/assets/86709272/9b3e7ef3-3ecb-46a6-8187-8284486f987f=250x250)
+![3](https://github.com/ShlomiShatz/WBR-ready/assets/86709272/94fa45ea-7ea5-44ef-8840-12cc0255f1e0=250x250)
 2. Unscrew the 8 small screws that hold the bottom and the top part together, 4 on the front and 4 on the back.
 ![4](https://github.com/ShlomiShatz/WBR-ready/assets/86709272/933d1b55-3560-4b49-a3fd-4461e1affb0c)
 3. Separate the bottom and the top parts of the robot, and place the top part aside carefully.
