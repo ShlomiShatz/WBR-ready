@@ -90,33 +90,33 @@ The WhiteBoxRobotics PC-Bot 914 is powered by two 12V lead-acid batteries locate
 <img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/9b3e7ef3-3ecb-46a6-8187-8284486f987f" width="300" height="300">
 <img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/94fa45ea-7ea5-44ef-8840-12cc0255f1e0" width="300" height="300">
 
-2. Unscrew the 8 small screws that hold the bottom and the top part together, 4 on the front and 4 on the back.
+2. Unscrew the 8 small screws that hold the bottom and the top part together, 4 on the front and 4 on the back.  
 <img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/933d1b55-3560-4b49-a3fd-4461e1affb0c" width="300" height="300">
 
-3. Separate the bottom and the top parts of the robot, and place the top part aside carefully.
+3. Separate the bottom and the top parts of the robot, and place the top part aside carefully.  
 <img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/d52ee74d-ac07-4c1c-b7a1-f6e7df4cfb48" width="300" height="300">
 
-4. Disconnect the two batteries from the cables.
+4. Disconnect the two batteries from the cables.  
 <img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/06997c57-c566-4373-a648-fc667a3580e9" width="300" height="300">
 
-5. Remove screws of the part that holds the batteries in place and the part itself.
+5. Remove screws of the part that holds the batteries in place and the part itself.  
 <img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/45daa7f3-b661-429f-8ae3-5dc5bbd8317a" width="300" height="300">
 <img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/39d69316-0c50-46c8-a0d4-0ac1a1540a75" width="300" height="300">
 
 6. Change both batteries and make sure it is in the right place, facing the same direction as the old ones.
-7. Put the part that holds them back to place and use the screws to make sure it fits tightly. *Don't forget to orginize the cables in a way that will make connecting them to the batteries possible before tightning the screws*.
+7. Put the part that holds them back to place and use the screws to make sure it fits tightly. *Don't forget to orginize the cables in a way that will make connecting them to the batteries possible before tightning the screws*.  
 <img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/413c17a3-adad-467e-801d-27d0a88c8d4c" width="300" height="300">
 
-8. Connect the cables to the batteries, making sure keeping the polarity intact (black wires go to black (negative), yellow wires go to red (positive)).
+8. Connect the cables to the batteries, making sure keeping the polarity intact (black wires go to black (negative), yellow wires go to red (positive)).  
 <img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/9f944824-6e60-43b6-8dac-a0fab1b5aa8e" width="300" height="300">
 
 9. Put the top part back on the bottom part, make sure they are facing the same direction.
 10. Screw the 8 small screws back and connect the cables to where each of them was.
-11. Turn on the red power button and the green power button to make sure they light up.
+11. Turn on the red power button and the green power button to make sure they light up.  
 <img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/b4df1310-7a28-42a7-ae2b-0da50b886acd" width="300" height="400">
 
 ### Power Suppliers
-The WBR has two sides. We will name the side with the main power switch **SIDE A**, and the side with the black switch and LED lights **SIDE B**:
+The WBR has two sides. We will name the side with the main power switch **SIDE A**, and the side with the black switch and LED lights **SIDE B**:  
 <img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/d28adfaf-763f-4ae3-8e9e-fd0293a38e47" width="400" height="300">
 
 Open A side, and you will find two M2-ATX power suppliers, each with its own purpse. The one on the that is closer to the power buttons is designated for the computer itself (and in our case - the RPi4), and the other is connected to the rest of the robot (fans, IRs, motors, etc.). As seen in this picture, each power supplier is connected to a battery (on the bottom right of the picture, two yellow and one red connectors, marked blue in the picture) and gives out power through the top ports (marked ATX1 and ATX 2, green in the picture). The right one is also suppliying power through the square port.  
@@ -139,18 +139,18 @@ Open side B (as specified in the *Power Suppliers* section). It should look empt
 Each section will be detailed below, but a few things beforehand:
 - We will use the GPIO pins of the RPi. It carries risks and might damage the RPi. Please make sure multiple times that everything is set up properly.
 - Most of what is written here is suggestive, I urge you to read the documentation and expand your knowledge in these subjects to come up with your own ideas.
-- For later reference, we will use this sketch of the RPi GPIO pins as specified [here](https://www.raspberrypi.com/documentation/computers/raspberry-pi.html):
+- For later reference, we will use this sketch of the RPi GPIO pins as specified [here](https://www.raspberrypi.com/documentation/computers/raspberry-pi.html):  
 ![GPIO-Pinout-Diagram-2](https://github.com/ShlomiShatz/WBR-ready/assets/86709272/4c039bb4-9862-4777-b4c6-38c9fabcb2d4)
 Every pin is numbered, some of them has specific purpse. For example, pins #2 and #4 are for 5V inputs (we will use one of them later), and pin #6 is GROUND pin, which means it is used to connect the negative wires to it.
 
 #### Power Source
-To connect the RPi to its power source, first make sure you got 5V output from the power supplier. Use a multimeter. **THE RASPBERRY TAKES 5V, INPUTTING 12V WILL CAUSE DAMAGE TO THE DEVICE**. After checking, take one 5V output (preferably from the M2-ATX that is closer to the red power switch), connect it to a red wire with a female pin input, and the ground to a black one, and connect the red to pin #4, and the black to pin #6, as shown in the picture below: 
+To connect the RPi to its power source, first make sure you got 5V output from the power supplier. Use a multimeter. **THE RASPBERRY TAKES 5V, INPUTTING 12V WILL CAUSE DAMAGE TO THE DEVICE**. After checking, take one 5V output (preferably from the M2-ATX that is closer to the red power switch), connect it to a red wire with a female pin input, and the ground to a black one, and connect the red to pin #4, and the black to pin #6, as shown in the picture below:  
 <img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/72e9084a-178d-4154-a08b-291d7a69e0dc" width="300" height="300">
 
 Turn on the power button and wait a few seconds, the RPi leds should turn on and remain stable.
 
 #### Motors
-After powering the RPi, you can connect it to the motors. take the USB cable that connects to the back of the robot (marked USB), and connect it to the **lower usb port in the middle**, called `tty0`, as seen in the pictures below. Connecting it to a different one might cause trouble in the next steps.
+After powering the RPi, you can connect it to the motors. take the USB cable that connects to the back of the robot (marked USB), and connect it to the **lower usb port in the middle**, called `tty0`, as seen in the pictures below. Connecting it to a different one might cause trouble in the next steps.  
 <img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/e336121b-bc8a-4e80-9b72-101e01d9fd41" width="300" height="300">
 <img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/8492b352-69f6-43ab-bafe-82b1cb560b80" width="300" height="300">
 
