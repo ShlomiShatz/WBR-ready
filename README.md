@@ -48,6 +48,15 @@ chmod +x send_telegram.sh
 ```
 Now check if you got the message. *Note: there is a problem with connecting the WBR_net to the internet, it is possible it is not working just yet.*  
 Another important step that will help you is to change the router settings to give your RPi a specific IP when connected. Ask Shlomi for help if needed.  
+#### Adding a Service
+Now, we need to take the `send_telegram` script and make sure it runs automatically whenever the RPi is up and connected to the network. For that, we will use a service.  
+To create the service, we will go to this directory:  
+`cd /etc/systemd/system`  
+Next, we will create a file called `telegram_send.service` and copy the following to it:  
+```
+[Unit]
+
+```
 
 ## Setting Up the WBR
 ### Batteries
