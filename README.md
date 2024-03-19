@@ -55,8 +55,26 @@ To create the service, we will go to this directory:
 Next, we will create a file called `telegram_send.service` and copy the following to it:  
 ```
 [Unit]
+Description=Sends a telegram after connecting to the internet
+Requires=network-online.target 
+After=network-online.target
 
+[Service]
+ExecStart=/home/USERNAME/send_telegram.sh
+
+[Install]
+WantedBy=multi-user.target
 ```
+The `[Unit]` part contains a description of the service, requirements and when to start it (`After=...`). The `[Service]` part says contains the actions made by the service - in this case, relying on the `send_telegram.sh` file to be at the home directory, run the file. **Make sure to change the `USERNAME` in the `[Service]` part to your own username!**
+After creating the file, run these commands to reload the services, start your service and enable it on every reboot:  
+```
+sudo systemctl daemon-reload
+sudo systemctl start telegram_send.service
+sudo systemctl enable telegram_send.service
+```
+Next, make sure the service is functioning by typing:  
+`sudo systemctl status telegram_send.service`  
+You can also reboot your RPi and make sure it works properly.
 
 ## Setting Up the WBR
 ### Batteries
