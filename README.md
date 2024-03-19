@@ -150,7 +150,7 @@ To connect the RPi to its power source, first make sure you got 5V output from t
 Turn on the power button and wait a few seconds, the RPi leds should turn on and remain stable.
 
 #### Motors
-After powering the RPi, you can connect it to the motors. take the USB cable that connects to the back of the robot (marked USB), and connect it to the **lower usb port in the middle**, called `tty0`, as seen in the pictures below. Connecting it to a different one might cause trouble in the next steps.  
+After powering the RPi, you can connect it to the motors. take the USB cable that connects to the back of the robot (marked USB), and connect it to the **lower usb port in the middle**, called `ttyUSB0`, as seen in the pictures below. Connecting it to a different one might cause trouble in the next steps.  
 <img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/e336121b-bc8a-4e80-9b72-101e01d9fd41" width="300" height="300">
 <img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/8492b352-69f6-43ab-bafe-82b1cb560b80" width="300" height="300">
 
