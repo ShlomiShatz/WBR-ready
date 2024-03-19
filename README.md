@@ -74,7 +74,7 @@ sudo systemctl enable telegram_send.service
 ```
 Next, make sure the service is functioning by typing:  
 `sudo systemctl status telegram_send.service`  
-You can also reboot your RPi and make sure it works properly.
+You can also reboot your RPi and make sure it works automatically during startup.
 
 ## Setting Up the WBR
 ### Batteries
@@ -113,7 +113,7 @@ The WhiteBoxRobotics PC-Bot 914 is powered by two 12V lead-acid batteries locate
 9. Put the top part back on the bottom part, make sure they are facing the same direction.
 10. Screw the 8 small screws back and connect the cables to where each of them was.
 11. Turn on the red power button and the green power button to make sure they light up.
-<img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/b4df1310-7a28-42a7-ae2b-0da50b886acd" width="300" height="300">
+<img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/b4df1310-7a28-42a7-ae2b-0da50b886acd" width="300" height="400">
 
 ### Power Suppliers
 The WBR has two sides. We will name the side with the main power switch **SIDE A**, and the side with the black switch and LED lights **SIDE B**:
@@ -195,4 +195,8 @@ else
         echo "Trying to send IP address, but failed!"
 fi
 ```
-We are running the python file in parallel to sending the message to the Telegram bot.
+We are running the python file in parallel to sending the message to the Telegram bot.  
+Right now, your RPi pinout should look something like this:
+<img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/e221633a-189c-4106-b5c0-0752eb553983" width="300" height="300">
+<img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/30ecef6b-32ea-4cf6-add2-9620878459e7" width="300" height="300">
+
