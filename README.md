@@ -200,10 +200,300 @@ Right now, your RPi pinout should look something like this:
 <img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/e221633a-189c-4106-b5c0-0752eb553983" width="300" height="300">
 <img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/30ecef6b-32ea-4cf6-add2-9620878459e7" width="300" height="300">
 
+## Extra - Teleop Keyboard Control
+Now, we will see how to add a new node to the project, used to control the robot with the keyboard. We will add the node to the *src/node_examples* directory.  
+In the *include/node_examples* directory, create a new file called `velocity_publisher_teleop_key.h` and write the following to it:
+```cpp
+#include <rclcpp/rclcpp.hpp>
+#include "geometry_msgs/msg/twist.hpp"
+#include <stdio.h>
+#include <unistd.h>
+#include <termios.h>
+#include <map>
+
+// The topic that we publish to
+const std::string velocity_topic_name = "velocity_cmd";
+
+// Create a class that inherits ros2 node
+class CmdVelPublisher_teleop_key: public rclcpp::Node {
+public:
+
+    // Constructor 
+    CmdVelPublisher_teleop_key() : Node("CmdVelPublisher_teleop_key") {
+        
+        // Defining publisher
+        publisher = this->create_publisher<geometry_msgs::msg::Twist>(velocity_topic_name, 10);
+        geometry_msgs::msg::Twist msg;
+        // Printing instructions
+        printf("%s", instructions);
+
+        // Open new thread to continuously publish Twist message
+        std::thread thread([this,&msg]() {
+            while(rclcpp::ok()) {
+                publisher->publish(msg);
+            }
+        });
+
+        while (rclcpp::ok()) {
+
+            // get the pressed key
+            key = getch();
+
+            //'A' and 'B' represent the Up and Down arrow keys consecutively 
+            if(key == 'A'||key == 'B') {
+                x = Lvel(key, x);
+                printf(updates, linear * x, linear, angular* th, angular, key);
+            }
+
+            //'C' and 'D' represent the Right and Left arrow keys consecutively 
+            else if(key == 'C' || key == 'D') {
+                th = Avel(key, th);
+                printf(updates, linear * x, linear, angular* th, angular, key);
+            }
+
+            else if (moveBindings.count(key) == 1) {
+                // Grab the direction data
+                x = moveBindings[key][0];
+                th = moveBindings[key][1];
+                printf(updates, linear * x, linear, angular* th, angular, key);
+            } 
+            // Otherwise if it corresponds to a key in speedBindings
+            else if (key == 'e') {
+                if (angular < 2) {
+                    angular += 0.1;
+                    printf(updates, linear * x, linear, angular* th, angular, key);
+                } else {
+                    printf(updates_higher, linear * x, linear, angular* th, angular, key);
+                } 
+            }
+
+            else if (key == 'c' && angular > 0) {
+                if (angular > 0.1) {
+                    angular -= 0.1;
+                    printf(updates, linear * x, linear, angular* th, angular, key);
+                } else {
+                    printf(updates_lower, linear * x, linear, angular* th, angular, key);
+                }
+            }
+
+            else if (key == 'w') {
+                if (linear < 0.3) {
+                    linear += 0.01;
+                    printf(updates, linear * x, linear, angular* th, angular, key);
+                } else {
+                    printf(updates_higher, linear * x, linear, angular* th, angular, key);
+                } 
+            }
+
+            else if (key == 'x' && linear > 0) {
+                if (linear > 0.02) {
+                    linear -= 0.01;
+                    printf(updates, linear * x, linear, angular* th, angular, key);
+                } else {
+                    printf(updates_lower, linear * x, linear, angular* th, angular, key);
+                }
+            }
+
+            // Otherwise, set the robot to stop
+            else { 
+                if (key == 's'||key == 'S') {
+                    x = 0;
+                    th = 0;
+                    printf(updates, linear * x, linear, angular* th, angular, key);
+                }
+                // If ctrl-C (^C) was pressed, terminate the program
+                else if (key == '\x03') {
+                    printf("\nStopped\n");
+                    rclcpp::shutdown();
+                    break;
+                }
+                else {
+                    printf(updates_invalid, linear * x, linear, angular* th, angular, key);
+                }
+            }
+
+            // Update the Twist message
+            msg.linear.x = x * linear;
+            msg.angular.x = th * angular;
+        }
+        thread.join();
+    }
+
+private:
+    rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr publisher;
+    // Map for movement keys
+    std::map<char, std::vector<float>> moveBindings {
+        {'i', {1, 0}},
+        {'o', {1, -1}},
+        {'j', {0, 1}},
+        {'l', {0, -1}},
+        {'u', {1, 1}},
+        {',', {-1, 0}},
+        {'.', {-1, 1}},
+        {'m', {-1, -1}},
+        {'k', {0, 0}}
+    };
+
+    // Instructions
+    const char* instructions = R"(
+    Reading from the keyboard and publishing to Twist!
+    ---------------------------
+    Moving around:
+    u    i    o
+    j    k    l
+    m    ,    .
+
+    Simple Teleoperation with arrow keys
+          ⇧
+        ⇦   ⇨
+          ⇩
+    ---------------------------
+    s/S/k : stop
+    w/x : Increase/decrease linear velocity by 0.01
+    e/c : Increase/decrease angular velocity by 0.1
+    
+    0.01 <= linear velocity <= 0.3
+    0.1 <= angular velocity <= 2.0
+
+    CTRL-C to quit
+    )";
+
+    const char* updates = "\rCurrent: Linear %f (max: %f) Angular %f (max: %f) | Last command: %c          ";
+    const char* updates_higher = "\rCurrent: Linear %f (max: %f) Angular %f (max: %f) | Highest achieved %c          ";
+    const char* updates_lower = "\rCurrent: Linear %f (max: %f) Angular %f (max: %f) | Lowest achieved %c          ";
+    const char* updates_invalid = "\rCurrent: Linear %f (max: %f) Angular %f (max: %f) | Invalid command: %c          ";
+    // Init variables
+    float linear = 0.3; // Linear velocity (m/s)
+    float angular = 1.0; // Angular velocity (rad/s)
+    float x, th; // Forward/backward/neutral direction vars
+    char key = ' ';
+
+    int getch(void) {
+        int ch;
+        struct termios oldt;
+        struct termios newt;
+
+        // Store old settings, and copy to new settings
+        tcgetattr(STDIN_FILENO, &oldt);
+        newt = oldt;
+
+        // Make required changes and apply the settings
+        newt.c_lflag &= ~(ICANON | ECHO);
+        newt.c_iflag |= IGNBRK;
+        newt.c_iflag &= ~(INLCR | ICRNL | IXON | IXOFF);
+        newt.c_lflag &= ~(ICANON | ECHO | ECHOK | ECHOE | ECHONL | ISIG | IEXTEN);
+        newt.c_cc[VMIN] = 1;
+        newt.c_cc[VTIME] = 0;
+        tcsetattr(fileno(stdin), TCSANOW, &newt);
+
+        // Get the current character
+        ch = getchar();
+
+        // Reapply old settings
+        tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+
+        return ch;
+    }
+
+    // Function to check linear is in the range or not
+    // Used to linearly increase/decrease the linear
+    float vel_check(float curr, bool decrease = false) {
+        if (decrease) curr = (curr >= -0.95) ? curr - 0.05 : -1;
+        else curr = (curr <= 0.95) ? curr + 0.05 : 1;
+        return curr;
+    }
+
+    // Linear vel for arrow keys
+    float Lvel(char key, float x) {
+        if(key == 'A') return vel_check(x, false);
+        if(key == 'B') return vel_check(x, true);
+        return 0;
+    }
+    // Angular vel for arrow keys
+    float Avel(char key, float th) {
+        if(key == 'C') return vel_check(th, true);
+        if(key == 'D') return vel_check(th, false);
+        return 0;
+    }
+
+};
+```
+Next, in the src file, create a new file called `velocity_publisher_teleop_key.cpp` and write to it the following:
+```cpp
+#include "velocity_publisher_teleop_key.h"
+
+int main(int argc, char** argv) {
+  rclcpp::init(argc, argv);
+
+  // Spin until ROS is shutdown
+  rclcpp::spin(std::make_shared<CmdVelPublisher_teleop_key>());
+
+  rclcpp::shutdown();
+
+  return 0;
+}
+```
+now, make sure to add the files to the *CMakeLists.txt* file, executable, dependencies, etc. It should look like this:
+```
+cmake_minimum_required(VERSION 3.8)
+project(node_examples)
+
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
+
+# find dependencies
+find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(rosidl_default_generators REQUIRED) ## For interfaces
+find_package(std_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
+## For the services
+find_package(wbr914_package REQUIRED)
+
+include_directories(
+include/node_examples
+)
+
+# Nodes executables
+add_executable(wbr914_velocity_publisher_basic 
+src/velocity_publisher_basic.cpp
+include/node_examples/velocity_publisher_basic.h) 
+
+add_executable(wbr914_velocity_publisher_continuous_basic 
+src/velocity_publisher_continuous_basic.cpp
+include/node_examples/velocity_publisher_continuous_basic.h) 
+
+add_executable(wbr914_velocity_publisher_teleop_key 
+src/velocity_publisher_teleop_key.cpp
+include/node_examples/velocity_publisher_teleop_key.h) 
+
+add_executable(wbr914_wiggle 
+src/wiggle_robot.cpp
+include/node_examples/wiggle_robot.h) 
+
+# Add needed ROS packages to the executables
+ament_target_dependencies(wbr914_velocity_publisher_basic rclcpp geometry_msgs)
+ament_target_dependencies(wbr914_velocity_publisher_continuous_basic rclcpp geometry_msgs)
+ament_target_dependencies(wbr914_wiggle rclcpp geometry_msgs)
+ament_target_dependencies(wbr914_velocity_publisher_teleop_key rclcpp geometry_msgs)
+
+install(TARGETS
+ wbr914_velocity_publisher_basic
+ wbr914_velocity_publisher_continuous_basic
+ wbr914_wiggle
+ wbr914_velocity_publisher_teleop_key
+  DESTINATION lib/${PROJECT_NAME})
+
+
+ament_package()
+```
+Now, build the package and run the file, and using the keyboard - controll the robot.
+
 ## Extra - IR Activation
 Next, we will see how to get a simple read from the IR sensors. *This is written when the 12V M2-ATX issue is not yet resolved.*  
 The robot has 8 IR sensors, marked 1-8, where 1-5 are on the bottom half of the robot, and 6-8 are on the top of the robot. The schematics can be found [here](https://github.com/EyalBrilling/914-PC-BOT-integration-with-raspberry-pi-4-and-ROS2/blob/main/docs/tech_specifications/PC-Bot_Tech_Spec-Infra-redSensorsv1.2.pdf).  
-First, we will take the relevant code from the original player driver and convert it to our use. To the *wbr914_minimal.h* file we will add:
+First, we will take the relevant code from the original player driver and convert it to our use. In the **wbr914_base_driver**, we will add to the *wbr914_minimal.h* file:
 ```cpp
 #define READANALOG        0xEF
 #define NUM_IR_SENSORS    8
@@ -284,5 +574,71 @@ void wbr914_minimal::GetIRData(float *d)
     d[ i ] = meters;
   }
 ```
-Now we have the basic code to get the IR sensors to work and return data.
+Now we have the basic code to get the IR sensors to work and return data, when the function is called.  
+We want it to work with ROS. We'll make a service that when called, return the current output of the IR sensors, in an array of Range messages form. First, we will create the service in the *src/wbr914_package/srv* directory a new file named `IRGet.srv`, and in it we will write:
+```
+---
+sensor_msgs/Range[] response_ranges
+```
+Second, in the *src/wbr914_package* directory, you can find the *wbr914_node.cpp* file and inside the *src/wbr914_package/include/wbr914_package* you can find the *wbr914_node.h* file. To the **header** file, add:
+```cpp
+#include "sensor_msgs/msg/range.hpp"
+#include <wbr914_package/srv/ir_get.hpp>
+```
+Now, to the constructor add:
+```cpp
+// Create the service that will return IR Data (Range message) on request
+IRGetService = this-> create_service<wbr914_package::srv::IRGet>("ir_get_robot",
+        std::bind(&CmdVelListener::get_ir_service,this,_1,_2));
+```
+To the private section add:
+```cpp
+/*
+  sensor_msgs/Range[] message array is returned by the get_ir service
+    uint8 ULTRASOUND=0
+    uint8 INFRARED=1
+    std_msgs/msg/Header header
+    uint8 radiation_type
+    float field_of_view
+    float min_range
+    float max_range
+    float range
+  */
 
+void get_ir_service(const std::shared_ptr<wbr914_package::srv::IRGet::Request> request,
+        std::shared_ptr<wbr914_package::srv::IRGet::Response> response);
+rclcpp::Service<wbr914_package::srv::IRGet>::SharedPtr IRGetService;
+```
+Now we go to the **cpp** file and we add:
+```cpp
+void CmdVelListener::get_ir_service(const std::shared_ptr<wbr914_package::srv::IRGet::Request> request,
+          std::shared_ptr<wbr914_package::srv::IRGet::Response> response) {  
+            float d[NUM_IR_SENSORS] = {0};
+            while (true) {
+              wbr914.GetIRData(d);
+              printf("Val: %f\n", d[0]);
+            }
+            for (int i = 0; i < NUM_IR_SENSORS; i++) {
+              auto msg = std::make_unique<sensor_msgs::msg::Range>();
+              msg->header.frame_id = "ir_sensor_" + std::to_string(i + 1);
+              msg->header.stamp = this->now();
+              msg->radiation_type = 1;
+              msg->field_of_view = 0.1;
+              if ( i == 5 || i == 7 ) {
+                // Sharp GP2Y0A02 sensors 20-150cm
+                msg->min_range = 0.2;
+                msg->max_range = 1.5;
+              }
+              else {
+                // Sharp GP2Y0A21 sensors 10-80cm
+                msg->min_range = 0.1;
+                msg->max_range = 0.8;
+              }
+              msg->range = d[i];
+              response->response_ranges.push_back(*msg);
+            }
+            return;
+          }
+```
+Lastly, we need to add the sensor messages to the dependencies of the project. Make sure to add the new srv file and the sensor_msgs everywhere needed in the CMakeLists.txt and package.xml files (i.e find_package in the CMakeLists file).  
+Afterwards, rebuild the wbr914_package node and make sure the ir_get service is available to use. Upon being called, it will return the IR status of the entire array of sensors as needed.
