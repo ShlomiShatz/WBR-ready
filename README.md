@@ -653,7 +653,7 @@ Next, make sure to install depth-image-proc package:
 Now, we will install a few necessary packages:  
 1. Gazebo - using the following command we will install *Ignition Gazebo*, which is the default version for ros iron: `sudo apt-get install ros-iron-ros-gz`  
 2. Camera Info Manager package: `sudo apt install ros-iron-camera-info-manager`
-3. Image Transport Package: `sudo apt install ros-iron-image-transport`
+3. Image Transport Package: `sudo apt install ros-iron-image-transport`  
 Next, I made a few adjustments to the `CMakeLists.txt` and `package.xml` files inside the repository, in order to make it compatible with ros iron rather than other distributions. Everywhere the package `gazebo` is required -> replace it with `ros_gz`, and everywhere that the package `gazebo_ros2_control` is required -> replace it with `gz_ros2_control`. *Everywhere else that requires a package called `gazebo_XXX` (e.g. `gazebo_plugins`) you can simply delete it. *Remember to make sure to go through all of the asus_xtion packages, both the CMakeLists.txt and the package.xml files.*
 After installing the necessary files and modifying the cmake and xml files, restart the terminal (or source the ros iron environment file) and use `colcon build` to build the package. If more packages are needed, make sure to install them.  
 Now, take the kinect and plug it in one of the RPi USB ports. Then, use `lsusb | grep -i "ASUS Xtion"` to make sure it is visible and connected correctly. Next, make sure the *install/setup.bash* file is sourced, and run the following command:
