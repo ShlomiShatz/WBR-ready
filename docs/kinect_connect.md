@@ -1,4 +1,4 @@
-## Asus Xtion Kinect Activation
+## Asus Xtion Kinect Connection
 In this part, we will see how to use the Asus Xtion kinect (image below) with the RPi and ros.  
 <img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/3de4d65a-b65a-4f5c-b68d-fbe63f11b64f" width="400" height="300">  
 
