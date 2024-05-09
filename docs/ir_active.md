@@ -1,5 +1,5 @@
-## Extra - IR Activation
-Next, we will see how to get a simple read from the IR sensors. *Note - This is written when the 12V M2-ATX issue is not yet resolved, so the readings are limited.*  
+## IR Activation
+Here, we will see how to get a simple read from the IR sensors. *Note - This is written when the 12V M2-ATX issue is not yet resolved, so the readings are limited.*  
 The robot has 8 IR sensors, marked 1-8, where 1-5 are on the bottom half of the robot, and 6-8 are on the top of the robot. The schematics can be found [here](https://github.com/EyalBrilling/914-PC-BOT-integration-with-raspberry-pi-4-and-ROS2/blob/main/docs/tech_specifications/PC-Bot_Tech_Spec-Infra-redSensorsv1.2.pdf).  
 First, we will take the relevant code from the original player driver and convert it to our use. In the **wbr914_base_driver**, we will add to the *wbr914_minimal.h* file:
 ```cpp
