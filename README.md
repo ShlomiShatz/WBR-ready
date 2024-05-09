@@ -646,6 +646,7 @@ Afterwards, rebuild the wbr914_package node and make sure the ir_get service is 
 
 ## Extra - Asus Xtion Kinect Activation
 In this part, we will see how to use the Asus Xtion kinect (image below) with the RPi and ros.  
+<img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/3de4d65a-b65a-4f5c-b68d-fbe63f11b64f" width="300" height="300">
 First, we will use a repository that specifically made for using this kinect and ros. Clone the following [repository](https://github.com/mgonzs13/ros2_asus_xtion) into your source directory using this command:  
 `git clone --recurse-submodules https://github.com/mgonzs13/ros2_asus_xtion`  
 Next, make sure to install depth-image-proc package:  
@@ -663,5 +664,4 @@ Next, open a second terminal and ssh to the RPi ***USING THE -X FLAG***, or the 
 From the second terminal, after making sure the *setup* file is sourced, run the following command:
 `ros2 launch asus_xtion_visualization rviz2.launch.py`
 You should see the rviz2 running, and the camera output should appear. *Note: using rviz over the ssh with the RPi can be very slow.* It should look something like this (I ticked off the *RobotModel* and *TF*):
-
-![16](https://github.com/ShlomiShatz/WBR-ready/assets/86709272/81b5eebe-4070-4b66-955b-fe2076269ee1)
+<img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/81b5eebe-4070-4b66-955b-fe2076269ee1">
