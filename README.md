@@ -199,3 +199,8 @@ We are running the python file in parallel to sending the message to the Telegra
 Right now, your RPi pinout should look something like this:  
 <img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/e221633a-189c-4106-b5c0-0752eb553983" width="300" height="300">
 <img src="https://github.com/ShlomiShatz/WBR-ready/assets/86709272/30ecef6b-32ea-4cf6-add2-9620878459e7" width="300" height="300">
+
+For extra examples of making new nodes, activating features of the robot and connecting devices to it, try doing:  
+1. [Teleop Keyboard Control Node](docs/teleop.md)
+2. [IR Activation](docs/ir_active.md)
+3. [ASUS Xtion Kinect Connection](docs/kinect_connect.md)
