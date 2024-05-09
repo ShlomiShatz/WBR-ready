@@ -662,5 +662,6 @@ Now, take the kinect and plug it in one of the RPi USB ports. Then, use `lsusb |
 Next, open a second terminal and ssh to the RPi ***USING THE -X FLAG***, or the next command will fail. e.g.: `ssh -X pi@192.168.0.11`
 From the second terminal, after making sure the *setup* file is sourced, run the following command:
 `ros2 launch asus_xtion_visualization rviz2.launch.py`
-You should see the rviz2 running, and the camera output should appear. *Note: using rviz over the ssh with the RPi can be very slow.* It should look something like this:
+You should see the rviz2 running, and the camera output should appear. *Note: using rviz over the ssh with the RPi can be very slow.* It should look something like this (I ticked off the *RobotModel* and *TF*):
 
+![16](https://github.com/ShlomiShatz/WBR-ready/assets/86709272/81b5eebe-4070-4b66-955b-fe2076269ee1)
